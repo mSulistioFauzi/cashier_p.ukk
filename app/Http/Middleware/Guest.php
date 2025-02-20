@@ -16,10 +16,14 @@ class Guest
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()){
-            return $next($request);
-        } else {
-            return redirect()->back()->with('canAccess', 'Anda sudah Login');
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('a_dashboard');
+            } elseif (Auth::user()->role === 'employee') {
+                return redirect()->route('e_dashboard');
+            }
         }
+
+        return $next($request);
     }
 }

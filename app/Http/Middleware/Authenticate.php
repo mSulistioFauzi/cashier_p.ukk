@@ -20,7 +20,7 @@ class Authenticate
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
-            return redirect()->route('login');
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
         return $next($request);

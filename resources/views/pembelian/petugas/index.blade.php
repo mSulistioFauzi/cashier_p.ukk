@@ -3,37 +3,44 @@
 @section('title', 'Pembelian')
 
 @section('content')
-<table class="table caption-top">
-    <caption>List of users</caption>
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nama Pelanggan</th>
-        <th scope="col">Tanggal Penjualan</th>
-        <th scope="col">Total Harga</th>
-        <th scope="col">Dibuat Oleh</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-        @for ($i = 0; $i < 3; $i++)
-            <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>100.000</td>
-            <td>Petugas</td>
-            <td class="d-flex justify-content-center">
-                <a href="#" class="btn btn-warning me-5">Lihat</a>
-                {{-- <a href="{{ route('user.edit', $item['id']) }}" class="btn btn-info me-3">update stok</a> --}}
-                <form action="#" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-info ms-5">Hapus</button>
-                </form>
-            </td>
-          </tr>
-        @endfor
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+              <button class="btn btn-primary">Export Penjualan (.xlsx)</button>
+              <a href="{{ route('sale.create') }}" class="btn btn-primary">Tambah Penjualan</a>
+            </div>
+            <div class="table-responsive">
+              <table id="salesTable" class="table table-striped caption-top">
+                <caption>entri</caption>
+                  <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Nama Pelanggan</th>
+                          <th>Tanggal Penjualan</th>
+                          <th>Total Harga</th>
+                          <th>Dibuat Oleh</th>
+                          <th>Aksi</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>1</td>
+                          <td>NON-MEMBER</td>
+                          <td>2025-02-20</td>
+                          <td>Rp. 12.000.000</td>
+                          <td>Petugas</td>
+                          <td>
+                              <button class="btn btn-warning btn-sm">Lihat</button>
+                              <button class="btn btn-primary btn-sm">Unduh Bukti</button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
 @endsection

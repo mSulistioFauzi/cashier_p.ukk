@@ -16,10 +16,10 @@ class mustEmployee
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role == 'employee') {
+        if (Auth::check() && Auth::user()->role === 'employee') {
             return $next($request);
         }
 
-        return redirect('/');
+        return redirect()->route('error.permission')->with('error', 'Anda tidak memiliki izin.');
     }
 }

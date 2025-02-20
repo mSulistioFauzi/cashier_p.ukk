@@ -7,7 +7,7 @@
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, bootstrap 5 admin">
     <meta name="description" content="Flexy Admin Lite - Bootstrap 5 Admin Dashboard Template">
     <meta name="robots" content="noindex,nofollow">
-    <title>@yield('title')</title>
+    <title>@yield('title') - IndoApril</title>
     
     <link rel="canonical" href="https://www.wrappixel.com/templates/Flexy-admin-lite/" />
     
@@ -46,7 +46,7 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0 d-flex align-items-center">
                               <li class="breadcrumb-item">
-                                  <a href="{{ url('/') }}" class="link"><i class="mdi mdi-home-outline fs-4"></i></a>
+                                  <a href="javascript:history.back()" class="link"><i class="mdi mdi-home-outline fs-4"></i></a>
                               </li>
                               <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
                             </ol>

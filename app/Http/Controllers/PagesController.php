@@ -8,7 +8,7 @@ class PagesController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard.admin.index');
+        return view('dashboard');
     }
     public function e_dashboard()
     {

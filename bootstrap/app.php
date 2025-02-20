@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'auth' => Authenticate::class,
-            'guest' => Guest::class,
+            'guest' => App\Http\Middleware\Guest::class,
             'mustAdmin' => App\Http\Middleware\mustAdmin::class,
             'mustEmployee' => \App\Http\Middleware\MustEmployee::class,
         ]);

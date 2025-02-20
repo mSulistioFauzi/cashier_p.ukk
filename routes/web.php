@@ -47,11 +47,11 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['mustEmployee'])->group(function () {
-        Route::get('/dashboard', [PagesController::class, 'e_dashboard'])->name('dashboard');
         Route::get('product', [ProductsController::class, 'e_index'])->name('product');
 
         Route::prefix('/sale')->name('sale.')->group(function () {
             Route::get('/', [SalesController::class, 'index'])->name('index');
+            Route::get('create', [SalesController::class, 'create'])->name('create');
         });
     });
 

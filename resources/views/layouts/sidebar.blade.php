@@ -2,12 +2,12 @@
     <div class="scroll-sidebar">
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                @if (Auth::User()->role == "admin")
                     <li class="sidebar-item"> 
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('dashboard') }}" aria-expanded="false">
                             <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
+                    @if (Auth::User()->role == "admin")
                     <li class="sidebar-item"> 
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('product.index') }}" aria-expanded="false">
                             <i class="mdi mdi-home-variant"></i><span class="hide-menu">Produk</span>
@@ -25,11 +25,6 @@
                     </li>
                 @endif
                 @if (Auth::User()->role == "employee")
-                    <li class="sidebar-item"> 
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('dashboard') }}" aria-expanded="false">
-                            <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span>
-                        </a>
-                    </li>
                     <li class="sidebar-item"> 
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('product') }}" aria-expanded="false">
                             <i class="mdi mdi-home-variant"></i><span class="hide-menu">Produk</span>
