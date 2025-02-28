@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
     public function index() 
     {
         $product = Product::all();
-        return view('produk.admin.index', compact('product'));
-    }
-    public function e_index() 
-    {
-        $product = Product::all();
-        return view('produk.petugas.index', compact('product'));
+        
+        if(Auth::user()->role == 'admin'){
+            return view('produk.admin.index', compact('product'));
+        } elseif (Auth::user()->role == 'employee') {
+            return view('produk.petugas.index', compact('product'));
+        }
     }
 
     public function create() 
@@ -82,7 +83,7 @@ class ProductsController extends Controller
         ]);
     
         // Redirect dengan pesan sukses
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diedit!');
+        return redirect()->route('product.index')->with('success', 'Produk berhasil diedit!');
     }
 
     public function updatedstock(Request $request, $id)
