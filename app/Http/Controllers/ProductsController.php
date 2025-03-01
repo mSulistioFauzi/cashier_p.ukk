@@ -40,7 +40,7 @@ class ProductsController extends Controller
         }
 
         $produk = Product::create([
-        'name' => $request->input('namaproduk'),
+            'name' => $request->input('namaproduk'),
             'price' => $request->input('harga'),
             'stock' => $request->input('stok'),
             'img' => $gambarPath, // Menyimpan path gambar ke kolom gambarproduk

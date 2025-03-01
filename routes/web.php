@@ -35,8 +35,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', [SalesController::class, 'create'])->name('create');
         Route::post('/create/post', [SalesController::class, 'post'])->name('post');
         Route::post('/create/store', [SalesController::class, 'store'])->name('store');
-        Route::get('/sale/member-form', [SaleController::class, 'memberForm'])->name('sale.memberForm');
-        Route::post('/sale/member-store', [SaleController::class, 'storeMember'])->name('sale.storeMember');
+        Route::get('/sale/member-form', [SalesController::class, 'memberForm'])->name('memberForm');
+        Route::post('/sale/member-store', [SalesController::class, 'storeMember'])->name('storeMember');
         Route::get('detail-print', [SalesController::class, 'detailPrint'])->name('detail');
     });
 

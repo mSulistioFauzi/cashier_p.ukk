@@ -31,59 +31,8 @@ class SalesController extends Controller
         return view('pembelian.petugas.post', compact('products'));
     }
 
-    // public function store(Request $request)
-    // {
-    //     // dd($request->all());
-
-    //     $totalPay = str_replace(['Rp.', '.'], '', $request->total_pay);
-    //     $request->merge(['total_pay' => $totalPay]);    
-    //     // Validasi input
-    //     $request->validate([
-    //         'total_price' => 'required|numeric|min:1',
-    //         'total_pay' => 'required|numeric|min:1',
-    //         'member' => 'required',
-    //         'no_hp' => 'nullable|numeric|digits_between:10,13', // Pastikan no HP dalam rentang panjang 10-13 digit
-    //         'products' => 'required|json', // Pastikan produk dikirim sebagai JSON yang valid
-    //     ]);
-
-    //     // Cek apakah pelanggan adalah member
-    //     $customer = null;
-    //     if ($request->member == "Member" && !empty($request->no_hp)) {
-    //         $customer = Customer::firstOrCreate(
-    //             ['no_hp' => $request->no_hp],
-    //             ['name' => 'Guest', 'poin' => 0]
-    //         );
-    //     }
-
-    //     // Simpan transaksi utama
-    //     $sale = Sale::create([
-    //         'sale_date' => now(),
-    //         'total_price' => $request->total_price,
-    //         'total_pay' => $request->total_pay,
-    //         'total_return' => $request->total_pay - $request->total_price,
-    //         'customer_id' => $customer ? $customer->id : null,
-    //         'user_id' => Auth::id(), // User yang melakukan transaksi
-    //         'poin' => 0, // Implementasi poin bisa ditambahkan
-    //         'total_poin' => 0
-    //     ]);
-
-    //     // Simpan detail transaksi
-    //     $products = json_decode($request->input('products'), true);
-            
-    //     foreach ($products as $product) {
-    //         DetailSale::create([
-    //             'sale_id' => $sale->id,
-    //             'product_id' => $product['id'],
-    //             'amount' => $product['jumlah'],
-    //             'sub_total' => $product['subtotal']
-    //         ]);
-    //     }
-
-    //     return redirect()->route('sale.index')->with('success', 'Transaksi berhasil disimpan!');
-    // }
-
     public function store(Request $request)
-{
+    {
         // Menghapus format mata uang dari total bayar
         $totalPay = str_replace(['Rp.', '.'], '', $request->total_pay);
         $request->merge(['total_pay' => $totalPay]);
@@ -99,11 +48,12 @@ class SalesController extends Controller
 
         // Jika user memilih "Member", redirect ke halaman input nama
         if ($request->member == "Member" && !empty($request->no_hp)) {
+            // dd('Member'); berhasil mengecek ini adalah member
             return redirect()->route('sale.memberForm', ['no_hp' => $request->no_hp, 'total_price' => $request->total_price, 'total_pay' => $request->total_pay, 'products' => $request->products]);
+        } else {
+            // Simpan transaksi jika bukan member
+            return $this->processSale($request, null);
         }
-
-        // Simpan transaksi jika bukan member
-        return $this->processSale($request, null);
     }
 
     // Fungsi untuk menyimpan transaksi
@@ -138,12 +88,17 @@ class SalesController extends Controller
     // Fungsi untuk menampilkan form input nama member
     public function memberForm(Request $request)
     {
-        return view('sale.memberForm', [
-            'no_hp' => $request->no_hp,
-            'total_price' => $request->total_price,
-            'total_pay' => $request->total_pay,
-            'products' => $request->products
+        $post = $request->validate([
+            'no_hp' => 'required|numeric|digits_between:10,13',
+            'total_price' => 'required|numeric|min:1',
+            'total_pay' => 'required|numeric|min:1',
         ]);
+
+        $customer = Customer::where('no_hp', $post['no_hp'])->first();
+        $sale = Sale::where('customer_id', $customer->id ?? null)->latest()->first();
+        $products = json_decode($request->products, true);
+        // dd($products, $request->all());
+        return view('pembelian.petugas.memberForm', compact('products', 'post', 'customer', 'sale'));
     }
 
     // Fungsi untuk menyimpan member dan transaksi
@@ -156,12 +111,18 @@ class SalesController extends Controller
             'total_pay' => 'required|numeric|min:1',
             'products' => 'required|json'
         ]);
+        // dd($request->all());
 
         // Simpan atau cari member berdasarkan nomor HP
         $customer = Customer::firstOrCreate(
             ['no_hp' => $request->no_hp],
-            ['name' => $request->name, 'poin' => 0]
+            ['name' => $request->name, 'poin' => 0] // Default poin 0 jika baru daftar
         );
+        
+        // Tambahkan poin untuk setiap transaksi
+        $customer->poin += 100; // Misalnya, dapat 10 poin setiap transaksi
+        $customer->save();
+        
 
         // Proses transaksi
         return $this->processSale($request, $customer->id);

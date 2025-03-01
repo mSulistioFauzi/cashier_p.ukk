@@ -61,7 +61,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                  <label for="no_hp" class="form-label col-md-12">No. HP <small id="error-hp" class="text-danger">(daftar/gunakan member)</small></label>
-                                                 <input type="number" name="no_hp" id="no_hp" class="form-control form-control-line col-md-12" onkeypress="if(this.value.length==13) return false;">
+                                                 <input type="number" name="no_hp" id="no_hp" class="form-control form-control-line col-md-12" value="121212121212" onkeypress="if(this.value.length==13) return false;">
                                             </div>
                                         </div>
                                     </div>
